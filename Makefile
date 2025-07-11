@@ -1,25 +1,20 @@
-COQMODULE    := PromisingLib
-COQTHEORIES  := src/*.v \
+.PHONY: all clean
 
-.PHONY: all theories clean
+# --- Configuration Variables ---
+# Define the build directory. Default is _build/default/lib/
+BUILD_DIR ?= _build/default/lib/
 
-all: Makefile.coq
-	$(MAKE) -f Makefile.coq all
+COQFILES := $(wildcard lib/*.v)
 
-quick: Makefile.coq
-	$(MAKE) -f Makefile.coq quick
+# --- Main Targets ---
+# Default target: creates the _CoqProject file
+all: _CoqProject
 
-Makefile.coq: Makefile $(COQTHEORIES)
-	(echo "-R src $(COQMODULE)"; \
-   echo $(COQTHEORIES)) > _CoqProject
-	coq_makefile -f _CoqProject -o Makefile.coq
+# Rule to create the _CoqProject file
+_CoqProject:
+	@echo "-R $(BUILD_DIR) promising.lib" > _CoqProject
+	@echo "$(COQFILES)" >> _CoqProject
 
-%.vo: Makefile.coq
-	$(MAKE) -f Makefile.coq "$@"
-
-%.vio: Makefile.coq
-	$(MAKE) -f Makefile.coq "$@"
-
+# Rule to clean up the generated _CoqProject file
 clean:
-	$(MAKE) -f Makefile.coq clean
-	rm -f _CoqProject Makefile.coq
+	@rm -f _CoqProject

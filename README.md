@@ -11,8 +11,3 @@ opam repo add coq-sflib -k git https://github.com/snu-sf/sf-opam-coq-archive.git
 opam repo add coq-promising -k git https://github.com/snu-sf/promising-opam-coq-archive.git#8.20
 opam install coq-promising-lib coq-sflib
 ```
-
-## Import
-```sh
-Require Import promising.lib
-```

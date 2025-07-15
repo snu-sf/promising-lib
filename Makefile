@@ -12,7 +12,7 @@ all: _CoqProject
 
 # Rule to create the _CoqProject file
 _CoqProject:
-	@echo "-R $(BUILD_DIR) promising.lib" > _CoqProject
+	@echo "-R $(BUILD_DIR) PromisingLib" > _CoqProject
 	@echo "$(COQFILES)" >> _CoqProject
 
 # Rule to clean up the generated _CoqProject file

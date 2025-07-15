@@ -1,6 +1,6 @@
 (include_subdirs qualified)
 (coq.theory
-  (name promising.lib)
+  (name PromisingLib)
   (package coq-promising-lib)
   (theories sflib)
 )

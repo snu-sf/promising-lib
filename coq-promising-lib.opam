@@ -19,7 +19,7 @@ homepage: "https://github.com/snu-sf/promising-lib"
 bug-reports: "https://github.com/snu-sf/promising-lib/issues"
 depends: [
   "coq" {= "8.20.0"}
-  "coq-sflib"
+  "coq-sflib" {= "2.0.0"}
   "ocaml"
   "base"
   "dune" {>= "3.8"}

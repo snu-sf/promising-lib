@@ -162,7 +162,7 @@ Lemma strong_induction
       (IH: forall (n:nat) (IH: forall k (LT: k < n), P k), P n):
   forall n : nat, P n.
 Proof.
-  i. cut (forall m k, k < m -> P k); [by eauto|].
+  i. cut (forall m k, k < m -> P k); [sfby eauto|].
   induction m.
   - i. lia.
   - i. inv H; eauto.

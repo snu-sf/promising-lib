@@ -21,7 +21,7 @@
  (description "This package provides useful Rocq lemmas and tactics for projects related to Promising Semantics developed at Seoul National University.")
  (depends
   (coq (= 8.20.0))
-  coq-sflib
+  (coq-sflib (= 2.0.0))
   ocaml
   base
   dune)

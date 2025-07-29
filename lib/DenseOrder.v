@@ -154,9 +154,9 @@ Module DOAux.
       lt (middle lhs rhs) rhs.
   Proof.
     induction lhs; s; i; inv LT; splits; econs;
-      (try by apply IHlhs; auto);
-      (try by apply incr_spec; auto);
-      (try by apply decr_spec; auto).
+      (try sfby apply IHlhs; auto);
+      (try sfby apply incr_spec; auto);
+      (try sfby apply decr_spec; auto).
   Qed.
 
   Lemma le_lt_dec (lhs rhs:t): {le lhs rhs} + {lt rhs lhs}.
@@ -408,7 +408,7 @@ Module DenseOrder.
     forall x y : t,
       CompareSpec (x = y) (lt x y) (lt y x) (compare x y).
   Proof.
-    i. destruct x, y; s; try by repeat econs.
+    i. destruct x, y; s; try sfby repeat econs.
     - generalize (DOAux.compare_spec x y).
       destruct (DOAux.compare x y); i; inv H.
       + econs 1. auto.
@@ -480,7 +480,7 @@ Module DenseOrder.
 
   Lemma incr_mon: forall x y, lt x y -> lt (incr x) (incr y).
   Proof.
-    i. inv H; ss; try by repeat econs.
+    i. inv H; ss; try sfby repeat econs.
   Qed.
 
   Definition middle (lhs rhs:t): t :=

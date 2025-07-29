@@ -40,14 +40,16 @@ Module UsualProd (A B:UsualOrderedType) <: UsualOrderedType.
 
   Definition eq := @eq t.
   Global Program Instance eq_equiv : Equivalence eq.
-  Hint Resolve (Equivalence_Transitive eq_equiv).
+  Definition _eq_equiv_trans := Equivalence_Transitive eq_equiv.
+  #[export]
+  Hint Resolve _eq_equiv_trans: core.
 
   Inductive lt_ (lhs rhs:t): Prop :=
   | lt_hd
-      (HD: A.lt lhs.(fst) rhs.(fst))
+      (HD: A.lt (fst lhs) (fst rhs))
   | lt_tl
-      (HD: lhs.(fst) = rhs.(fst))
-      (TL: B.lt lhs.(snd) rhs.(snd))
+      (HD: (fst lhs) = (fst rhs))
+      (TL: B.lt (snd lhs) (snd rhs))
   .
   Definition lt := lt_.
   Global Program Instance lt_strorder: StrictOrder lt.
@@ -63,7 +65,8 @@ Module UsualProd (A B:UsualOrderedType) <: UsualOrderedType.
     - econs 1. rewrite HD. eauto.
     - econs 2; etransitivity; eauto.
   Qed.
-  Hint Resolve lt_strorder_obligation_2.
+  #[export]
+  Hint Resolve lt_strorder_obligation_2: core.
 
   Global Program Instance lt_compat: Proper (eq ==> eq ==> iff) lt.
   Next Obligation.
@@ -71,9 +74,9 @@ Module UsualProd (A B:UsualOrderedType) <: UsualOrderedType.
   Qed.
 
   Definition compare (lhs rhs:t): comparison :=
-    match A.compare lhs.(fst) rhs.(fst) with
+    match A.compare (fst lhs) (fst rhs) with
     | Eq =>
-      B.compare lhs.(snd) rhs.(snd)
+      B.compare (snd lhs) (snd rhs)
     | Lt => Lt
     | Gt => Gt
     end.

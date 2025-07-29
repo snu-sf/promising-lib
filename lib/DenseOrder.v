@@ -36,7 +36,6 @@ Module DOAux.
 
   Definition eq := @eq t.
   Global Program Instance eq_equiv : Equivalence eq.
-  Hint Resolve (Equivalence_Transitive eq_equiv).
 
   Inductive lt_: forall (lhs rhs:t), Prop :=
   | lt_xO_xH lhs:
@@ -66,7 +65,6 @@ Module DOAux.
     - apply IHXY. auto.
     - apply IHXY. auto.
   Qed.
-  Hint Resolve lt_strorder_obligation_2.
 
   Global Program Instance lt_compat: Proper (eq ==> eq ==> iff) lt.
   Next Obligation.
@@ -89,6 +87,7 @@ Module DOAux.
     | xI ltl, xI rtl =>
       compare ltl rtl
     end.
+
   Lemma compare_spec :
     forall x y : t,
       CompareSpec (x = y) (lt x y) (lt y x) (compare x y).
@@ -155,9 +154,9 @@ Module DOAux.
       lt (middle lhs rhs) rhs.
   Proof.
     induction lhs; s; i; inv LT; splits; econs;
-      (try by apply IHlhs; auto);
-      (try by apply incr_spec; auto);
-      (try by apply decr_spec; auto).
+      (try sfby apply IHlhs; auto);
+      (try sfby apply incr_spec; auto);
+      (try sfby apply decr_spec; auto).
   Qed.
 
   Lemma le_lt_dec (lhs rhs:t): {le lhs rhs} + {lt rhs lhs}.
@@ -326,6 +325,12 @@ Module DOAux.
   Qed.
 End DOAux.
 
+Definition _DOAux_eq_transitive := Equivalence_Transitive DOAux.eq_equiv.
+#[export]
+Hint Resolve _DOAux_eq_transitive: core.
+#[export]
+Hint Resolve DOAux.lt_strorder_obligation_2: core.
+
 Global Program Instance DOAux_le_PreOrder: PreOrder DOAux.le.
 Next Obligation.
   ii. apply DOAux.le_lteq. right. auto.
@@ -337,14 +342,14 @@ Next Obligation.
   des; subst; auto.
   left. rewrite H. auto.
 Qed.
-Hint Resolve DOAux_le_PreOrder_obligation_2.
+#[export]
+Hint Resolve DOAux_le_PreOrder_obligation_2: core.
 
 Module DenseOrder.
   Definition t := positive.
 
   Definition eq := @eq t.
   Global Program Instance eq_equiv : Equivalence eq.
-  Hint Resolve (Equivalence_Transitive eq_equiv).
 
   Inductive lt_: forall (lhs rhs:t), Prop :=
   | lt_xH_xO lhs:
@@ -376,14 +381,13 @@ Module DenseOrder.
     - etrans; eauto.
     - etrans; eauto.
   Qed.
-  Hint Resolve lt_strorder_obligation_2.
 
   Global Program Instance lt_compat: Proper (eq ==> eq ==> iff) lt.
   Next Obligation.
     ii. unfold eq in *. subst. auto.
   Qed.
 
-  Fixpoint compare (lhs rhs:t): comparison :=
+  Definition compare (lhs rhs:t): comparison :=
     match lhs, rhs with
     | xH, xH =>
       Eq
@@ -404,7 +408,7 @@ Module DenseOrder.
     forall x y : t,
       CompareSpec (x = y) (lt x y) (lt y x) (compare x y).
   Proof.
-    i. destruct x, y; s; try by repeat econs.
+    i. destruct x, y; s; try sfby repeat econs.
     - generalize (DOAux.compare_spec x y).
       destruct (DOAux.compare x y); i; inv H.
       + econs 1. auto.
@@ -438,20 +442,48 @@ Module DenseOrder.
     - right. refl.
   Qed.
 
-  Fixpoint incr (x:t) :=
+  (* Definition incr (x:t) := *)
+  (*   match x with *)
+  (*   | xH => xI xH *)
+  (*   | xO x => xO (DOAux.incr x) *)
+  (*   | xI x => xI (DOAux.incr x) *)
+  (*   end. *)
+
+  (* Lemma incr_spec: forall x, lt x (incr x). *)
+  (*   i. destruct x; econs. *)
+  (*   - apply DOAux.incr_spec. *)
+  (*   - apply DOAux.incr_spec. *)
+  (* Qed. *)
+
+  Definition incr (x: t) :=
     match x with
-    | xH => xI xH
-    | xO x => xO (DOAux.incr x)
-    | xI x => xI (DOAux.incr x)
+    | xH => xO xH
+    | xO x => xO (xI x)
+    | xI x => xI (xI x)
     end.
 
-  Lemma incr_spec: forall x, lt x (incr x).
-    i. destruct x; econs.
-    - apply DOAux.incr_spec.
-    - apply DOAux.incr_spec.
+  Lemma incr_spec_aux: forall x, DOAux.lt x (xI x).
+  Proof.
+    induction x.
+    - econs. ss.
+    - econs.
+    - econs.
   Qed.
 
-  Fixpoint middle (lhs rhs:t): t :=
+  Lemma incr_spec: forall x, lt x (incr x).
+  Proof.
+    i. destruct x; ss.
+    - econs. apply incr_spec_aux.
+    - econs. apply incr_spec_aux.
+    - econs.
+  Qed.
+
+  Lemma incr_mon: forall x y, lt x y -> lt (incr x) (incr y).
+  Proof.
+    i. inv H; ss; try sfby repeat econs.
+  Qed.
+
+  Definition middle (lhs rhs:t): t :=
     match lhs, rhs with
     | _, xH => lhs
     | xH, xO rtl => xO (DOAux.decr rtl)
@@ -639,6 +671,12 @@ Module DenseOrder.
   Qed.
 End DenseOrder.
 
+Definition _DenseOrder_eq_transitive := Equivalence_Transitive DenseOrder.eq_equiv.
+#[export]
+Hint Resolve _DenseOrder_eq_transitive: core.
+#[export]
+Hint Resolve DenseOrder.lt_strorder_obligation_2: core.
+
 Global Program Instance DenseOrder_le_PreOrder: PreOrder DenseOrder.le.
 Next Obligation.
   ii. apply DenseOrder.le_lteq. right. auto.
@@ -650,7 +688,8 @@ Next Obligation.
   des; subst; auto.
   left. rewrite H. auto.
 Qed.
-Hint Resolve DenseOrder_le_PreOrder_obligation_2.
+#[export]
+Hint Resolve DenseOrder_le_PreOrder_obligation_2: core.
 
 
 Module DOSet := UsualSet DenseOrder.
@@ -734,19 +773,19 @@ Module DOMap.
       + rewrite PositiveMap.gleaf in FIND'. congr.
     }
     destruct (raw_max_key t0_2) eqn:Y.
-    { exploit raw_max_key_spec2; eauto. i. des. splits; i; auto.
+    { hexploit raw_max_key_spec2; eauto. i. des. splits; i; auto.
       destruct k'; ss.
-      - exploit MAX; eauto. i. inv x.
+      - exploit MAX; eauto. intros x. inv x.
         + left. econs. eauto.
         + right. inv H. refl.
       - left. econs.
       - left. econs.
     }
     destruct (raw_max_key t0_1) eqn:Z.
-    { exploit raw_max_key_spec2; eauto. i. des. splits; i; auto.
+    { hexploit raw_max_key_spec2; eauto. i. des. splits; i; auto.
       destruct k'; ss.
       - erewrite raw_max_key_spec1 in FIND'; eauto. congr.
-      - exploit MAX; eauto. i. inv x.
+      - exploit MAX; eauto. intros x. inv x.
         + left. econs. eauto.
         + right. inv H. refl.
       - left. econs.
@@ -824,10 +863,10 @@ Module DenseOrderFacts.
         (RHS: DenseOrder.lt rhs o):
     DenseOrder.lt (DenseOrder.join lhs rhs) o.
   Proof.
-    exploit DenseOrder.join_spec.
+    hexploit DenseOrder.join_spec.
     - apply DenseOrder.le_lteq. left. apply LHS.
     - apply DenseOrder.le_lteq. left. apply RHS.
-    - i. apply DenseOrder.le_lteq in x0. des; auto. subst.
+    - i. apply DenseOrder.le_lteq in H. des; auto. subst.
       generalize (DenseOrder.join_cases lhs rhs). i. des.
       + rewrite H at 1. auto.
       + rewrite H at 1. auto.

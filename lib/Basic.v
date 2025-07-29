@@ -1,8 +1,9 @@
 Require String.
 Require Import RelationClasses.
 Require Import List.
+Require Import Arith.
 Require Import PArith.
-Require Import Omega.
+Require Import Lia.
 Require Import UsualFMapPositive.
 Require Import FMapFacts.
 Require Import MSetList.
@@ -23,10 +24,6 @@ Module Ident <: OrderedTypeWithLeibniz.
 
   Lemma eq_leibniz (x y: t): eq x y -> x = y.
   Proof. auto. Qed.
-
-  Parameter of_string: String.string -> t.
-  Hypothesis of_string_inject:
-    forall s1 s2 (H12: s1 <> s2), of_string s1 <> of_string s2.
 
   Ltac ltb_tac :=
     match goal with
@@ -62,15 +59,18 @@ Module IdentMap := UsualPositiveMap.
 Notation rtc := (clos_refl_trans_1n _). (* reflexive transitive closure *)
 Notation rc := (clos_refl _). (* reflexive transitive closure *)
 Notation tc := (clos_trans _). (* transitive closure *)
-Hint Immediate rt1n_refl rt1n_trans t_step.
-Hint Resolve Relation_Operators.rt1n_trans.
+#[export]
+Hint Immediate rt1n_refl rt1n_trans t_step: core.
+#[export]
+Hint Resolve Relation_Operators.rt1n_trans: core.
 
-Program Instance rtc_PreOrder A (R:A -> A -> Prop): PreOrder (rtc R).
+Global Program Instance rtc_PreOrder A (R:A -> A -> Prop): PreOrder (rtc R).
 Next Obligation.
   ii. revert H0. induction H; auto. i.
   exploit IHclos_refl_trans_1n; eauto.
 Qed.
-Hint Resolve rtc_PreOrder_obligation_2.
+#[export]
+Hint Resolve rtc_PreOrder_obligation_2: core.
 
 Lemma rtc_tail A R
       (a1 a3:A)
@@ -130,7 +130,8 @@ Inductive rtcn A (R: A -> A -> Prop): forall (n:nat) (a1 a2:A), Prop :=
     (A23: rtcn R n a2 a3):
     rtcn R (S n) a1 a3
 .
-Hint Constructors rtcn.
+#[export]
+Hint Constructors rtcn: core.
 
 Lemma rtcn_rtc A (R: A -> A -> Prop) n a1 a2
       (RTCN: rtcn R n a1 a2):
@@ -161,10 +162,10 @@ Lemma strong_induction
       (IH: forall (n:nat) (IH: forall k (LT: k < n), P k), P n):
   forall n : nat, P n.
 Proof.
-  i. cut (forall m k, k < m -> P k); [by eauto|].
+  i. cut (forall m k, k < m -> P k); [sfby eauto|].
   induction m.
-  - i. omega.
-  - i. apply lt_le_S in H. inv H; eauto.
+  - i. lia.
+  - i. inv H; eauto.
 Qed.
 
 Definition option_app {A} (a b: option A) : option A :=
@@ -228,7 +229,8 @@ Qed.
 Lemma orb_symm (a b: bool): orb a b -> orb b a.
 Proof. destruct a,b; eauto. Qed.
 
-Hint Resolve orb_symm.
+#[export]
+Hint Resolve orb_symm: core.
 
 
 Lemma in_prod
@@ -292,3 +294,9 @@ Proof.
   - inv FORALL. exploit IHl1; eauto. i. des. eauto.
   - inv FORALL. exploit IHl1; eauto. i. des. ss.
 Qed.
+
+Lemma option_rel_mon A B (R0 R1: A -> B-> Prop)
+      (LE: forall a b (PR: R0 a b), R1 a b)
+  :
+    forall a b (PR: option_rel R0 a b), option_rel R1 a b.
+Proof. i. unfold option_rel in *. des_ifs. auto. Qed.

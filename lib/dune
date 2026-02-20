@@ -2,5 +2,5 @@
 (coq.theory
   (name PromisingLib)
   (package coq-promising-lib)
-  (theories sflib)
+  (theories Stdlib sflib)
 )

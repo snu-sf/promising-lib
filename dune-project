@@ -1,6 +1,6 @@
 (lang dune 3.8)
 (name coq-promising-lib)
-(version 2.0.1)
+(version 2.1.0)
 (using coq 0.8)
 
 (source (github snu-sf/promising-lib))
@@ -13,18 +13,17 @@
   "Yeji Han <yeji.han@sf.snu.ac.kr>"
   "Gil Hur <gil.hur@sf.snu.ac.kr>"
 )
-(maintainers "snu-sf")
+(maintainers "yeji.han@sf.snu.ac.kr")
 
 (package
  (name coq-promising-lib)
- (synopsis "A collection of useful Rocq lemmas and tactics for projects related to Promsing Semantics")
- (description "This package provides useful Rocq lemmas and tactics for projects related to Promising Semantics developed at Seoul National University.")
+ (synopsis "Utility library for Promising Semantics Rocq developments")
+ (description "Provides lemmas, data structures, and definitions used across Promising Semantics Rocq formalizations.")
  (depends
-  (coq (>= 8.19.2))
-  (coq-sflib (= 2.0.1))
-  ocaml
-  base
-  dune)
- (maintainers "snu-sf"))
+  (coq-core (>= 9.0))
+  rocq-stdlib
+  (coq-sflib (>= 2.1.0))
+  (dune (>= 3.8)))
+ (maintainers "yeji.han@sf.snu.ac.kr"))
 
 (generate_opam_files true)

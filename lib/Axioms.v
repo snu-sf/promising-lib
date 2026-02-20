@@ -1,3 +1,3 @@
-Require Export Classical.
-Require Export ClassicalChoice.
-Require Export FunctionalExtensionality.
+From Stdlib Require Export Classical.
+From Stdlib Require Export ClassicalChoice.
+From Stdlib Require Export FunctionalExtensionality.

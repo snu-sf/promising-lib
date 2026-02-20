@@ -1,12 +1,12 @@
-Require String.
-Require Import RelationClasses.
-Require Import List.
-Require Import Arith.
-Require Import PArith.
-Require Import Lia.
+From Stdlib Require String.
+From Stdlib Require Import RelationClasses.
+From Stdlib Require Import List.
+From Stdlib Require Import Arith.
+From Stdlib Require Import PArith.
+From Stdlib Require Import Lia.
 Require Import UsualFMapPositive.
-Require Import FMapFacts.
-Require Import MSetList.
+From Stdlib Require Import FMapFacts.
+From Stdlib Require Import MSetList.
 
 From sflib Require Import sflib.
 

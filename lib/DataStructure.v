@@ -1,7 +1,7 @@
-Require Import Equalities.
-Require Import FunctionalExtensionality.
-Require Import MSetList.
-Require Import MSetFacts.
+From Stdlib Require Import Equalities.
+From Stdlib Require Import FunctionalExtensionality.
+From Stdlib Require Import MSetList.
+From Stdlib Require Import MSetFacts.
 
 From sflib Require Import sflib.
 

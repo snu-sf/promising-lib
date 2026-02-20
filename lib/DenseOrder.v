@@ -1,8 +1,8 @@
-Require Import Orders.
-Require Import OrdersFacts.
-Require Import RelationClasses.
-Require Import PArith.
-Require Import FMapPositive.
+From Stdlib Require Import Orders.
+From Stdlib Require Import OrdersFacts.
+From Stdlib Require Import RelationClasses.
+From Stdlib Require Import PArith.
+From Stdlib Require Import FMapPositive.
 
 From sflib Require Import sflib.
 

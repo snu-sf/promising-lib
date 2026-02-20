@@ -1,4 +1,4 @@
-Require Import Bool OrderedType ZArith OrderedType OrderedTypeEx FMapInterface FMapPositive FMapFacts ProofIrrelevance EqdepFacts.
+From Stdlib Require Import Bool OrderedType ZArith OrderedType OrderedTypeEx FMapInterface FMapPositive FMapFacts ProofIrrelevance EqdepFacts.
 
 From sflib Require Import sflib.
 

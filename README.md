@@ -1,12 +1,34 @@
 # A Library for the Promising Semantics
 
+Utility library providing lemmas, data structures, and definitions used across Promising Semantics Rocq formalizations.
+
+## Compatibility
+
+| Branch   | Rocq/Coq version |
+|----------|-------------------|
+| `master` | Rocq >= 9.0       |
+| `8.20`   | Coq >= 8.19.2     |
+
+## Installation
+
+```sh
+git clone https://github.com/snu-sf/promising-lib.git
+cd promising-lib
+opam install .
+```
+
+## Usage
+
+```coq
+From PromisingLib Require Import Basic.
+```
+
 ## Build
 
-- Requirement: [Coq 8.20.0](https://coq.inria.fr/download), opam.
-
-- Install via opam
 ```sh
-opam repo add coq-released https://coq.inria.fr/opam/released
-opam repo add coq-sflib -k git https://github.com/snu-sf/sf-opam-coq-archive.git
-opam install coq-promising-lib coq-sflib
+dune build
 ```
+
+## License
+
+BSD-2-Clause

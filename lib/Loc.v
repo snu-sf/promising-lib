@@ -1,6 +1,6 @@
-Require Import Orders.
-Require Import Lia.
-Require Import Coq.Logic.PropExtensionality.
+From Stdlib Require Import Orders.
+From Stdlib Require Import Lia.
+From Stdlib.Logic Require Import PropExtensionality.
 
 From sflib Require Import sflib.
 

@@ -1,4 +1,5 @@
 Set Implicit Arguments.
+Set Universe Polymorphism.
 
 Module Language.
   Section Language.

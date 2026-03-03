@@ -1,6 +1,6 @@
 (lang dune 3.8)
 (name coq-promising-lib)
-(version 2.1.0)
+(version 2.1.1)
 (using coq 0.8)
 
 (source (github snu-sf/promising-lib))

@@ -354,4 +354,5 @@ Module ProgramEvent.
 End ProgramEvent.
 
 
+#[universes(polymorphic)]
 Definition language: Type := Language.t ProgramEvent.t.
